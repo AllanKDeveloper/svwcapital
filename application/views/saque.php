@@ -81,6 +81,7 @@ START - Mobile Menu
 START - Mobile Menu List
 -------------------->
                     <ul class="main-menu">
+                        <li><a href="<?php echo base_url(); ?>">Início</a></li>
                         <li class="has-sub-menu">
                             <a href="#">
                                 <div class="icon-w">
@@ -136,10 +137,8 @@ START - Settings Link in secondary top menu
                         <div class="os-dropdown">
                             <div class="icon-w"><i class="os-icon os-icon-ui-46"></i></div>
                             <ul>
+                                <li><a href="<?php echo base_url(); ?>home"><i class="os-icon os-icon-ui-49"></i><span>Início</span></a></li>
                                 <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Cadastrar Clientes</span></a></li>
-                                <li><a href="<?php echo base_url(); ?>saques"><i class="os-icon os-icon-grid-10"></i><span>Solicitações de Saques</span></a></li>
-                                <li><a href="users_profile_small.html"><i class="os-icon os-icon-ui-44"></i><span>My Invoices</span></a></li>
-                                <li><a href="users_profile_small.html"><i class="os-icon os-icon-ui-15"></i><span>Cancel Account</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -155,127 +154,41 @@ END - Main Menu
             <div style="width: 100%;">
                 <div class="content-i">
                     <div class="content-box">
-                        <div class="element-wrapper compact pt-4">
-                            <div class="element-actions"><a class="btn btn-primary btn-sm" href="#"><i class="os-icon os-icon-ui-22"></i><span>Add Account</span></a><a class="btn btn-success btn-sm" href="#"><i class="os-icon os-icon-grid-10"></i><span>Make Payment</span></a></div>
-                            <h6 class="element-header">Página Inicial</h6>
-                            <div class="element-box-tp">
-                                <div class="row">
-                                    <div class="col-lg-7 col-xxl-6">
-                                        <!--START - BALANCES-->
-                                        <div class="element-balances">
-                                            <div class="balance hidden-mobile">
-                                                <div class="balance-title">Balanço Total</div>
-                                                <div class="balance-value"><span>R$350</span><span class="trending trending-down-basic"><span>%12</span><i class="os-icon os-icon-arrow-2-down"></i></span>
-                                                </div>
-                                                <div class="balance-link"><a class="btn btn-link btn-underlined" href="#"><span>Ver Estado</span><i class="os-icon os-icon-arrow-right4"></i></a></div>
-                                            </div>
-                                            <div class="balance">
-                                                <div class="balance-title">Crédito Disponível</div>
-                                                <div class="balance-value">$17,800</div>
-                                                <div class="balance-link"><a class="btn btn-link btn-underlined" href="#"><span>Solicitar aumento</span><i class="os-icon os-icon-arrow-right4"></i></a></div>
-                                            </div>
-                                            <div class="balance">
-                                                <div class="balance-title">Devendo</div>
-                                                <div class="balance-value danger">R$180</div>
-                                                <div class="balance-link"><a class="btn btn-link btn-underlined btn-gold" href="#"><span>Pagar agora</span><i class="os-icon os-icon-arrow-right4"></i></a></div>
-                                            </div>
-                                        </div>
-                                        <!--END - BALANCES-->
-                                    </div>
-                                    <div class="col-lg-5 col-xxl-6">
-                                        <!--START - Money Withdraw Form-->
-                                        <div class="element-wrapper">
-                                            <div class="element-box">
-                                                <form id="formValidate" method="POST" action="<?php echo base_url(); ?>/home/solicita">
-                                                    <h5 class="element-box-header">Resgatar Dinheiro</h5>
-                                                    <div class="row">
-                                                        <div class="col-sm-5">
-                                                            <div class="form-group">
-                                                                <label class="lighter" for="">Quantidade</label>
-                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <div class="input-group-append">
-                                                                        <div class="input-group-text">R$</div>
-                                                                    </div>
-                                                                    <input class="form-control money" id="money" data-error="Quantidade não pode ser 0 (zero)." placeholder="Digite a quantidade..." name="money" required="required" type="text">
-                                                                </div>
-                                                                <div class="help-block form-text with-errors form-control-feedback"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-7">
-                                                            <div class="form-group">
-                                                                <label class="lighter" for="">Transferir para</label>
-                                                                <select class="form-control" disabled>
-                                                                    <option value=""><?php echo $this->session->userdata('cli_bnc')?> <?php echo $this->session->userdata('cli_agn')?> <?php echo $this->session->userdata('cli_cct')?></option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-buttons-w text-right compact">
-                                                        <!-- <a class="btn btn-grey" href="#"><i class="os-icon os-icon-ui-22"></i><span>Add na Conta</span></a> -->
-                                                        <button class="mr-2 mb-2 btn btn-primary" type="submit"><span>Transferir</span><i class="os-icon os-icon-grid-18"></i></button>
-                                                    </div>
-                                                    <?php
-                                                    if($this->session->flashdata('message'))
-                                                    {
-                                                        echo '
-                                                            <div class="text-right">
-                                                                <span class="badge badge-success">'.$this->session->flashdata("message").'</span>
-                                                            </div>';
-                                                    }
-                                                    ?>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!--END - Money Withdraw Form-->
-                                    </div>
-                                </div>
+                        <div class="element-box-content">
+                        <?php
+                        if($this->session->flashdata('message'))
+                        {
+                            echo '
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <button aria-label="Fechar" class="close" data-dismiss="alert" type="button"><span aria-hidden="true"> ×</span>
+                                </button>'.$this->session->flashdata("message").'
                             </div>
-                        </div>
-                        <?php if ($saques_analise): ?>
-                        <!-- START - Analise Saque -->
-                        <?php foreach ($saques_analise as $analise): ?>
-                            <div class="element-wrapper">
-                                <h6 class="element-header">Em Análise</h6>
-                                <div class="col-6 col-sm-3 col-xxl-2">
-                                    <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
-                                        <div class="label"><?php echo $analise->date ?></div>
-                                        <div class="value text-warning">R$ <?php echo $analise->value ?></div>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                        <!-- END - Analise Saque -->
-                        <?php endif; ?>
-                        <?php if ($saques_aprovado): ?>
-                        <!-- START - Aprovado Saque -->
-                        <?php foreach ($saques_aprovado as $aprovado): ?>
-                            <div class="element-wrapper">
-                                <h6 class="element-header">Aprovados</h6>
-                                <div class="col-6 col-sm-3 col-xxl-2">
-                                    <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
-                                        <div class="label"><?php echo $aprovado->date ?></div>
-                                        <div class="value text-success">R$ <?php echo $aprovado->value ?></div>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                        <!-- END - Aprovado Saque -->
-                        <?php endif; ?>
-                        <?php if ($saques_reprovado): ?>
-                        <!-- START - Analise Saque -->
-                        <?php foreach ($saques_reprovado as $reprovado): ?>
-                            <div class="element-wrapper">
-                                <h6 class="element-header">Reprovados</h6>
-                                <div class="col-6 col-sm-3 col-xxl-2">
-                                    <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
-                                        <div class="label"><?php echo $reprovado->date ?></div>
-                                        <div class="value text-danger">R$ <?php echo $reprovado->value ?></div>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                        <!-- END - Analise Saque -->
-                        <?php endif; ?>
+                            ';
+                        }
+                        ?>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Ciente</th>
+                                    <th class="text-center">Data</th>
+                                    <th class="text-center">Valor</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($saques as $saques): ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo $saques->client;?></td>
+                                        <td class="text-center"><?php echo $saques->date;?></td>
+                                        <td class="text-center"><?php echo $saques->value;?></td>
+                                        <td class="row-actions text-center">
+                                            <button class="mr-2 mb-2 btn btn-sm btn-success aproveBtn" type="button" data-href="<?php echo base_url('saquese/delete/'.$saques->id); ?>"> Aprovar</button>
+                                            <button class="mr-2 mb-2 btn btn-sm btn-danger deleteBtn" type="button" data-href="<?php echo base_url('saquese/delete/'.$saques->id); ?>"> Reprovar</button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -310,8 +223,87 @@ END - Main Menu
     <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/js/dist/tab.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/js/dist/tooltip.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/js/dist/popover.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/jquery.mask.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/demo_customizer.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.mask.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script>
+        Inputmask().mask(document.querySelectorAll("input"));
+
+        $(document).on( "click", '.edit_button',function(e) {
+            var name = $(this).data('name');
+            var id = $(this).data('id');
+            var email = $(this).data('email');
+            var birthday = $(this).data('birthday');
+            var profession = $(this).data('profession');
+            var marital_status = $(this).data('marital_status');
+            var cli_cgc = $(this).data('cli_cgc');
+            var cli_num = $(this).data('cli_num');
+            var cli_end = $(this).data('cli_end');
+            var cli_bnc = $(this).data('cli_bnc');
+            var cli_agn = $(this).data('cli_agn');
+            var cli_cct = $(this).data('cli_cct');
+            var date_contribution = $(this).data('date_contribution');
+            var contracted_interest = $(this).data('contracted_interest');
+            var cash = $(this).data('cash');
+            var is_email_verified = $(this).data('is_email_verified');
+            var is_admin = $(this).data('is_admin');
+
+            $("#id").val(id);
+            $("#name").val(name);
+            $("#email").val(email);
+            $("#birthday").val(birthday);
+            $("input[name='profession']").val(profession);
+            $("input[name='marital_status']").val(marital_status);
+            $("#cli_cgc").val(cli_cgc);
+            $("#cli_num").val(cli_num);
+            $("#cli_end").val(cli_end);
+            $("input[name='cli_bnc']").val(cli_bnc);
+            $("input[name='cli_agn']").val(cli_agn);
+            $("input[name='cli_cct']").val(cli_cct);
+            $("input[name='date_contribution']").val(date_contribution);
+            $("input[name='contracted_interest']").val(contracted_interest);
+            $("input[name='cash']").val(cash);
+
+             if (is_email_verified == 'yes') {
+                document.getElementById("status_active").checked = true;
+             } else {
+                document.getElementById("status_inative").checked = true;
+             }
+
+              if (is_admin == true) {
+                document.getElementById("admin_active").checked = true;
+             } else {
+                document.getElementById("admin_inative").checked = true;
+             }
+        });
+
+        $(document).on( "click", '.deleteBtn',function(e) {
+            e.preventDefault();
+            var url = $(this).data('href');
+                Swal.fire({
+                    title: 'Deseja excluir permanentemente?',
+                    text: "Não será possível recuperar o usuário após a exclusão!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Excluir',
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.value) {
+                        Swal.fire(
+                          'Deletado!',
+                          'Conta deletada com sucesso.',
+                          'success'
+                        )
+                        setTimeout(function(){
+                            window.location.replace(url);
+                        }, 1000);
+                    }
+                })
+        });
+    </script>
 </body>
 </html>

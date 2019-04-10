@@ -16,6 +16,9 @@ class Login_model extends CI_Model
                     {
                         $data['id'] =  $row->id;
                         $data['name'] =  $row->name;
+                        $data['cli_bnc'] =  $row->cli_bnc;
+                        $data['cli_agn'] =  $row->cli_agn;
+                        $data['cli_cct'] =  $row->cli_cct;
                         if ($row->is_admin == true) {
                             $data['admin'] = true;
                         }

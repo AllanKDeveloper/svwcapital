@@ -137,8 +137,8 @@ START - Settings Link in secondary top menu
                         <div class="os-dropdown">
                             <div class="icon-w"><i class="os-icon os-icon-ui-46"></i></div>
                             <ul>
-                                <li><a href="<?php echo base_url(); ?>"><i class="os-icon os-icon-grid-10"></i><span>Início</span></a></li>
-                                <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Cadastrar Clientes</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>home"><i class="os-icon os-icon-ui-49"></i><span>Início</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>saques"><i class="os-icon os-icon-grid-10"></i><span>Solicitações de Saques</span></a></li>
                             </ul>
                         </div>
                     </div>

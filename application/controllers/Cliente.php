@@ -12,6 +12,7 @@ class Cliente extends CI_Controller {
         $this->load->library('form_validation');
         $this->load->library('encrypt');
         $this->load->model('client_model');
+        $this->load->model('income_model');
     }
 
     function index()
@@ -51,6 +52,13 @@ class Cliente extends CI_Controller {
             );
             $id = $this->client_model->insert($data);
             if ($id > 0) {
+                $income = array(
+                    'client' => $id,
+                    'cash' => $data['cash'],
+                    'contracted_interest' => $data['contracted_interest'],
+                    'date_contribution' => date('d/m/Y')
+                );
+                $this->income_model->insert($income);
                 $this->session->set_flashdata('message', 'Conta criado com sucesso!');
                 redirect('clientes');
             }
