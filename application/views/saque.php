@@ -138,7 +138,7 @@ START - Settings Link in secondary top menu
                             <div class="icon-w"><i class="os-icon os-icon-ui-46"></i></div>
                             <ul>
                                 <li><a href="<?php echo base_url(); ?>home"><i class="os-icon os-icon-ui-49"></i><span>Início</span></a></li>
-                                <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Cadastrar Clientes</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Clientes</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -176,14 +176,14 @@ END - Main Menu
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($saques as $saques): ?>
+                                <?php foreach ($saques as $saque): ?>
                                     <tr>
-                                        <td class="text-center"><?php echo $saques->client;?></td>
-                                        <td class="text-center"><?php echo $saques->date;?></td>
-                                        <td class="text-center"><?php echo $saques->value;?></td>
+                                        <td class="text-center"><?php echo $saque->client_name;?></td>
+                                        <td class="text-center"><?php echo $saque->date;?></td>
+                                        <td class="text-center">R$<?php echo $saque->value;?></td>
                                         <td class="row-actions text-center">
-                                            <button class="mr-2 mb-2 btn btn-sm btn-success aproveBtn" type="button" data-href="<?php echo base_url('saquese/delete/'.$saques->id); ?>"> Aprovar</button>
-                                            <button class="mr-2 mb-2 btn btn-sm btn-danger deleteBtn" type="button" data-href="<?php echo base_url('saquese/delete/'.$saques->id); ?>"> Reprovar</button>
+                                            <button class="mr-2 mb-2 btn btn-sm btn-success aproveBtn" type="button" data-href="<?php echo base_url('saque/aprove/'.$saque->id); ?>"> Aprovar</button>
+                                            <button class="mr-2 mb-2 btn btn-sm btn-danger deleteBtn" type="button" data-href="<?php echo base_url('saque/reprove/'.$saque->id); ?>"> Reprovar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -283,19 +283,45 @@ END - Main Menu
             e.preventDefault();
             var url = $(this).data('href');
                 Swal.fire({
-                    title: 'Deseja excluir permanentemente?',
-                    text: "Não será possível recuperar o usuário após a exclusão!",
+                    title: 'Deseja reprovar o saque?',
+                    text: "Não será possível reverter após reprovar!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Excluir',
+                    confirmButtonText: 'Reprovar',
                     cancelButtonText: "Cancelar",
                 }).then((result) => {
                     if (result.value) {
                         Swal.fire(
-                          'Deletado!',
-                          'Conta deletada com sucesso.',
+                          'Reprovado!',
+                          'Saque reprovado com sucesso.',
+                          'success'
+                        )
+                        setTimeout(function(){
+                            window.location.replace(url);
+                        }, 1000);
+                    }
+                })
+        });
+
+        $(document).on( "click", '.aproveBtn',function(e) {
+            e.preventDefault();
+            var url = $(this).data('href');
+                Swal.fire({
+                    title: 'Deseja aceitar o saque?',
+                    text: "Não será possível reverter após aceitar!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aprovar',
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.value) {
+                        Swal.fire(
+                          'Aprovado!',
+                          'O saque aprovado com sucesso.',
                           'success'
                         )
                         setTimeout(function(){

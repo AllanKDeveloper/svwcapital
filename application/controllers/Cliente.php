@@ -22,6 +22,7 @@ class Cliente extends CI_Controller {
     }
 
     function cadastro() {
+        $this->form_validation->set_rules('cod', 'Código', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('password', 'Senha', 'required|trim');
         $this->form_validation->set_rules('cpassword', 'Confirme a Senha', 'required|trim');
@@ -32,6 +33,7 @@ class Cliente extends CI_Controller {
         {
             $encrypted_password = $this->encrypt->encode($this->input->post('password'));
             $data = array(
+                'cod'                  => $this->input->post('cod'),
                 'name'                  => $this->input->post('name'),
                 'email'                 => $this->input->post('email'),
                 'password'              => $encrypted_password,
@@ -44,19 +46,24 @@ class Cliente extends CI_Controller {
                 'cli_bnc'               => !empty($this->input->post('cli_bnc')) ? $this->input->post('cli_bnc') : null,
                 'cli_agn'               => !empty($this->input->post('cli_agn')) ? $this->input->post('cli_agn') : null,
                 'cli_cct'               => !empty($this->input->post('cli_cct')) ? $this->input->post('cli_cct') : null,
-                'date_contribution'     => !empty($this->input->post('date_contribution')) ? $this->input->post('date_contribution') : null,
-                'contracted_interest'   => !empty($this->input->post('contracted_interest')) ? $this->input->post('contracted_interest') : null,
-                'cash'                  => !empty($this->input->post('cash')) ? $this->input->post('cash') : null,
                 'is_email_verified'     => ($this->input->post('status') == 'active') ? 'yes' : 'no',
                 'is_admin'              => ($this->input->post('admin') == 'active') ? '1' : '0',
             );
             $id = $this->client_model->insert($data);
             if ($id > 0) {
+                $first_aporte = array(
+                    'client'                => $id,
+                    'date_contribution'     => !empty($this->input->post('date_contribution')) ? $this->input->post('date_contribution') : null,
+                    'contracted_interest'   => !empty($this->input->post('contracted_interest')) ? $this->input->post('contracted_interest') : null,
+                    'cash'                  => !empty($this->input->post('cash')) ? $this->input->post('cash') : null,
+                );
+                $this->client_model->insert_aporte($first_aporte);
                 $income = array(
                     'client' => $id,
-                    'cash' => $data['cash'],
-                    'contracted_interest' => $data['contracted_interest'],
-                    'date_contribution' => date('d/m/Y')
+                    'contributed' => $data['cash'],
+                    'interest' => '0,00',
+                    'date' => date('d/m/Y'),
+                    'total' => $data['cash']
                 );
                 $this->income_model->insert($income);
                 $this->session->set_flashdata('message', 'Conta criado com sucesso!');
@@ -75,6 +82,7 @@ class Cliente extends CI_Controller {
             show_404();
         }
 
+        $this->form_validation->set_rules('cod', 'Código', 'required|trim');
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('name', 'Nome', 'required');
         $this->form_validation->set_rules('birthday', 'Data de Nascimento', 'required');
@@ -85,6 +93,7 @@ class Cliente extends CI_Controller {
                 $encrypted_password = $this->encrypt->encode($this->input->post('password'));
                 $data = array(
                     'id'                    => $this->input->post('id'),
+                    'cod'                  => $this->input->post('cod'),
                     'name'                  => $this->input->post('name'),
                     'email'                 => $this->input->post('email'),
                     'password'              => $encrypted_password,
@@ -97,15 +106,13 @@ class Cliente extends CI_Controller {
                     'cli_bnc'               => !empty($this->input->post('cli_bnc')) ? $this->input->post('cli_bnc') : null,
                     'cli_agn'               => !empty($this->input->post('cli_agn')) ? $this->input->post('cli_agn') : null,
                     'cli_cct'               => !empty($this->input->post('cli_cct')) ? $this->input->post('cli_cct') : null,
-                    'date_contribution'     => !empty($this->input->post('date_contribution')) ? $this->input->post('date_contribution') : null,
-                    'contracted_interest'   => !empty($this->input->post('contracted_interest')) ? $this->input->post('contracted_interest') : null,
-                    'cash'                  => !empty($this->input->post('cash')) ? $this->input->post('cash') : null,
                     'is_email_verified'     => ($this->input->post('status') == 'active') ? 'yes' : 'no',
                     'is_admin'              => ($this->input->post('admin') == 'active') ? '1' : '0',
                 );
             } else {
                 $data = array(
                     'id'                    => $this->input->post('id'),
+                    'cod'                  => $this->input->post('cod'),
                     'name'                  => $this->input->post('name'),
                     'email'                 => $this->input->post('email'),
                     'birthday'              => $this->input->post('birthday'),
@@ -117,9 +124,6 @@ class Cliente extends CI_Controller {
                     'cli_bnc'               => !empty($this->input->post('cli_bnc')) ? $this->input->post('cli_bnc') : null,
                     'cli_agn'               => !empty($this->input->post('cli_agn')) ? $this->input->post('cli_agn') : null,
                     'cli_cct'               => !empty($this->input->post('cli_cct')) ? $this->input->post('cli_cct') : null,
-                    'date_contribution'     => !empty($this->input->post('date_contribution')) ? $this->input->post('date_contribution') : null,
-                    'contracted_interest'   => !empty($this->input->post('contracted_interest')) ? $this->input->post('contracted_interest') : null,
-                    'cash'                  => !empty($this->input->post('cash')) ? $this->input->post('cash') : null,
                     'is_email_verified'     => ($this->input->post('status') == 'active') ? 'yes' : 'no',
                     'is_admin'              => ($this->input->post('admin') == 'active') ? '1' : '0',
                 );
@@ -145,6 +149,89 @@ class Cliente extends CI_Controller {
         
         $this->client_model->delete($id);
         redirect('clientes');
+    }
+
+    function get_saques()
+    {
+        $saquesData = $this->input->post('saquesData');
+        if(isset($saquesData) and !empty($saquesData)){
+            $this->load->model('solicitation_model');
+            $records = $this->solicitation_model->getSaquesAll($saquesData);
+            if (sizeof($records) > 0) {
+                $output = '';
+                $pieces = array_chunk($records, ceil(count($records) / 2));
+                foreach($pieces[0] as $row){
+                    if ($row->status == 1) {
+                        $li = '<li class="text-success">'.$row->date.' R$'.$row->value.'</li>';
+                    } else if ($row->status == 0) {
+                        $li = '<li class="text-danger">'.$row->date.' R$'.$row->value.'</li>';
+                    } else {
+                        $li = '<li class="text-warning">'.$row->date.' R$'.$row->value.'</li>';
+                    }
+                     $output .= '
+                        <div class="col-md-6">
+                            <ul class="features-list">
+                                '.$li.'
+                            </ul>
+                        </div>
+                    ';
+                }
+                foreach($pieces[1] as $row){
+                    if ($row->status == 1) {
+                        $li = '<li class="text-success">'.$row->date.' R$'.$row->value.'</li>';
+                    } else if ($row->status == 0) {
+                        $li = '<li class="text-danger">'.$row->date.' R$'.$row->value.'</li>';
+                    } else {
+                        $li = '<li class="text-warning">'.$row->date.' R$'.$row->value.'</li>';
+                    }
+                     $output .= '
+                        <div class="col-md-6">
+                            <ul class="features-list">
+                                '.$li.'
+                            </ul>
+                        </div>
+                    ';
+                }
+                echo $output;
+            } else {
+                echo '<center><ul class="list-group"><li class="list-group-item">'.'Nenhuma solicitação realizada.'.'</li></ul></center>';
+            }
+        }
+        else {
+         echo '<center><ul class="list-group"><li class="list-group-item">'.'Selecione um cliente'.'</li></ul></center>';
+        }
+    }
+
+    function cadastro_aporte() {
+        $this->form_validation->set_rules('client', 'Cliente', 'required|trim');
+        $this->form_validation->set_rules('date_contribution', 'Data', 'required|trim');
+        $this->form_validation->set_rules('contracted_interest', 'Juros', 'required|trim');
+        $this->form_validation->set_rules('cash', 'Valor', 'required|trim');
+
+        if ($this->form_validation->run())
+        {
+            $data = array(
+                'client'                => !empty($this->input->post('client')) ? $this->input->post('client') : null,
+                'date_contribution'     => !empty($this->input->post('date_contribution')) ? $this->input->post('date_contribution') : null,
+                'contracted_interest'   => !empty($this->input->post('contracted_interest')) ? $this->input->post('contracted_interest') : null,
+                'cash'                  => !empty($this->input->post('cash')) ? $this->input->post('cash') : null,
+            );
+            $id = $this->client_model->insert_aporte($data);
+            $income = array(
+                'client' => $id,
+                'contributed' => $data['cash'],
+                'interest' => '0,00',
+                'date' => date('d/m/Y'),
+                'total' => $data['cash']
+            );
+            $this->income_model->insert($income);
+            $this->session->set_flashdata('message', 'Aporte criado com sucesso!');
+            redirect('clientes');
+        }
+        else
+        {
+            $this->index();
+        }
     }
 }
 

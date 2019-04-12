@@ -26,7 +26,13 @@ class Client_model extends CI_Model
     {
         $this->db->where('id', $id);
         return $this->db->delete('clients');
-    }  
+    }
+
+    function insert_aporte($data)
+	{
+		$this->db->insert('contract', $data);
+		return $this->db->insert_id();
+	}
 }
 
 ?>

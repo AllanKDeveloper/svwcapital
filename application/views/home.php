@@ -90,6 +90,15 @@ START - Mobile Menu List
                                 <li><a href="<?php echo base_url(); ?>clientes">Listar Clientes</a></li>
                             </ul>
                         </li>
+                        <li class="has-sub-menu">
+                            <a href="#">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-users"></div>
+                                </div><span>Saques</span></a>
+                            <ul class="sub-menu">
+                                <li><a href="<?php echo base_url(); ?>saques">Ver Solicitações</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <!--------------------
 END - Mobile Menu List
@@ -136,7 +145,7 @@ START - Settings Link in secondary top menu
                         <div class="os-dropdown">
                             <div class="icon-w"><i class="os-icon os-icon-ui-46"></i></div>
                             <ul>
-                                <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Cadastrar Clientes</span></a></li>
+                                <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Clientes</span></a></li>
                                 <li><a href="<?php echo base_url(); ?>saques"><i class="os-icon os-icon-grid-10"></i><span>Solicitações de Saques</span></a></li>
                                 <li><a href="users_profile_small.html"><i class="os-icon os-icon-ui-44"></i><span>My Invoices</span></a></li>
                                 <li><a href="users_profile_small.html"><i class="os-icon os-icon-ui-15"></i><span>Cancel Account</span></a></li>
@@ -156,32 +165,34 @@ END - Main Menu
                 <div class="content-i">
                     <div class="content-box">
                         <div class="element-wrapper compact pt-4">
-                            <div class="element-actions"><a class="btn btn-primary btn-sm" href="#"><i class="os-icon os-icon-ui-22"></i><span>Add Account</span></a><a class="btn btn-success btn-sm" href="#"><i class="os-icon os-icon-grid-10"></i><span>Make Payment</span></a></div>
+                            <!-- <div class="element-actions"><a class="btn btn-primary btn-sm" href="#"><i class="os-icon os-icon-ui-22"></i><span>Add Account</span></a><a class="btn btn-success btn-sm" href="#"><i class="os-icon os-icon-grid-10"></i><span>Make Payment</span></a></div> -->
                             <h6 class="element-header">Página Inicial</h6>
                             <div class="element-box-tp">
                                 <div class="row">
-                                    <div class="col-lg-7 col-xxl-6">
+                                        <?php foreach ($balanco as $key => $value): ?>
+                                    <div class="col-6 col-sm-3 col-xxl-2">
                                         <!--START - BALANCES-->
-                                        <div class="element-balances">
+                                        <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
+                                            <div class="label">Aporte <?php echo $value->contract_id ?></div>
+                                            <div class="value">R$<?php echo $value->contributed ?></div>
+                                            <div class="trending trending-up">
+                                                <span>R$<?php echo $value->interest ?></span><i class="os-icon os-icon-arrow-up6"></i>
+                                            </div>
+                                        </a>
+                                        <!-- <div class="element-balances">
                                             <div class="balance hidden-mobile">
                                                 <div class="balance-title">Balanço Total</div>
-                                                <div class="balance-value"><span>R$350</span><span class="trending trending-down-basic"><span>%12</span><i class="os-icon os-icon-arrow-2-down"></i></span>
+                                                <div class="balance-value"><span>R$<?php echo $balanco_total ?></span><span class="trending trending-down-basic">
                                                 </div>
-                                                <div class="balance-link"><a class="btn btn-link btn-underlined" href="#"><span>Ver Estado</span><i class="os-icon os-icon-arrow-right4"></i></a></div>
                                             </div>
                                             <div class="balance">
                                                 <div class="balance-title">Crédito Disponível</div>
-                                                <div class="balance-value">$17,800</div>
-                                                <div class="balance-link"><a class="btn btn-link btn-underlined" href="#"><span>Solicitar aumento</span><i class="os-icon os-icon-arrow-right4"></i></a></div>
+                                                <div class="balance-value">R$<?php echo $interest ?></div>
                                             </div>
-                                            <div class="balance">
-                                                <div class="balance-title">Devendo</div>
-                                                <div class="balance-value danger">R$180</div>
-                                                <div class="balance-link"><a class="btn btn-link btn-underlined btn-gold" href="#"><span>Pagar agora</span><i class="os-icon os-icon-arrow-right4"></i></a></div>
-                                            </div>
-                                        </div>
+                                        </div> -->
                                         <!--END - BALANCES-->
                                     </div>
+                                        <?php endforeach; ?>
                                     <div class="col-lg-5 col-xxl-6">
                                         <!--START - Money Withdraw Form-->
                                         <div class="element-wrapper">
@@ -191,14 +202,24 @@ END - Main Menu
                                                     <div class="row">
                                                         <div class="col-sm-5">
                                                             <div class="form-group">
-                                                                <label class="lighter" for="">Quantidade</label>
+                                                                <label class="lighter" for="">Limite disponível: R$<?php echo $interest_total ?></label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">R$</div>
                                                                     </div>
-                                                                    <input class="form-control money" id="money" data-error="Quantidade não pode ser 0 (zero)." placeholder="Digite a quantidade..." name="money" required="required" type="text">
+                                                                    <input class="form-control money" id="money" data-error="Quantidade não pode ser maior que o limite disponível." placeholder="Digite a quantidade..." name="money" required="required" type="text">
                                                                 </div>
                                                                 <div class="help-block form-text with-errors form-control-feedback"></div>
+                                                                <?php
+                                                                if($this->session->flashdata('limite'))
+                                                                {
+                                                                    echo '
+                                                                    <div class="help-block form-text with-errors form-control-feedback">
+                                                                        '.$this->session->flashdata("limite").'
+                                                                    </div>
+                                                                    ';
+                                                                }
+                                                                ?>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-7">
@@ -239,7 +260,7 @@ END - Main Menu
                                 <div class="col-6 col-sm-3 col-xxl-2">
                                     <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
                                         <div class="label"><?php echo $analise->date ?></div>
-                                        <div class="value text-warning">R$ <?php echo $analise->value ?></div>
+                                        <div class="value text-warning">R$<?php echo $analise->value ?></div>
                                     </a>
                                 </div>
                             </div>
@@ -254,7 +275,7 @@ END - Main Menu
                                 <div class="col-6 col-sm-3 col-xxl-2">
                                     <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
                                         <div class="label"><?php echo $aprovado->date ?></div>
-                                        <div class="value text-success">R$ <?php echo $aprovado->value ?></div>
+                                        <div class="value text-success">R$<?php echo $aprovado->value ?></div>
                                     </a>
                                 </div>
                             </div>
@@ -269,7 +290,7 @@ END - Main Menu
                                 <div class="col-6 col-sm-3 col-xxl-2">
                                     <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
                                         <div class="label"><?php echo $reprovado->date ?></div>
-                                        <div class="value text-danger">R$ <?php echo $reprovado->value ?></div>
+                                        <div class="value text-danger">R$<?php echo $reprovado->value ?></div>
                                     </a>
                                 </div>
                             </div>

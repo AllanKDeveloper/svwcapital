@@ -159,6 +159,10 @@ $(function () {
     $('#formValidate2').validator();
   }
 
+  if ($('.formValidate').length) {
+    $('.formValidate').validator();
+  }
+
   // #4. DATE RANGE PICKER
 
   $('input.single-daterange').daterangepicker({ "singleDatePicker": true });

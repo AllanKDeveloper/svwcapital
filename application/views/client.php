@@ -167,6 +167,7 @@ END - Main Menu
                             }
                             ?>
                             <button class="mr-2 mb-2 btn btn-outline-primary" type="button" data-target="#cadastroModal" data-toggle="modal">  Novo Cliente</button>
+                            <button class="mr-2 mb-2 btn btn-outline-warning" type="button" data-target="#cadastroAporte" data-toggle="modal">  Novo Aporte</button>
                             <div aria-labelledby="cadastroModalLabel" class="modal fade" id="cadastroModal" role="dialog" tabindex="-1" style="display: none; padding-right: 17px;">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -176,6 +177,11 @@ END - Main Menu
                                         </div>
                                         <form id="formValidate" novalidate="true" method="post" action="<?php echo base_url(); ?>cliente/cadastro">
                                             <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="cod"> Código</label>
+                                                    <input class="form-control" data-error="Código obrigatório." placeholder="Digite o código" required="required" type="cod" name="cod" id="cod">
+                                                    <div class="help-block form-text with-errors form-control-feedback"></div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="email"> Email</label>
                                                     <input class="form-control" data-error="Seu email é inválido" placeholder="Digite um email" required="required" type="email" name="email">
@@ -268,26 +274,6 @@ END - Main Menu
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="date_contribution"> Data de Aporte</label>
-                                                            <input class="form-control" placeholder="__/__/____" type="text" name="date_contribution" data-inputmask="'mask': '99/99/9999'">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label for="contracted_interest"> Juros Contratados</label>
-                                                            <input class="form-control" placeholder="Digite o juros contratado" type="text" name="contracted_interest">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label for="cash"> Valor Aportado</label>
-                                                            <input class="form-control money" placeholder="Digite o valor aportado" type="text" name="cash">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
                                                             <label for="status">Status</label>
                                                             <div class="form-check">
                                                                 <label class="form-check-label">
@@ -313,6 +299,27 @@ END - Main Menu
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <h4>Primeiro aporte</h4>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="date_contribution"> Data de Aporte</label>
+                                                            <input class="form-control" placeholder="__/__/____" type="text" name="date_contribution" data-inputmask="'mask': '99/99/9999'">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="contracted_interest"> Juros Contratados</label>
+                                                            <input class="form-control" placeholder="Digite o juros contratado" type="text" name="contracted_interest">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="cash"> Valor Aportado</label>
+                                                            <input class="form-control money" placeholder="Digite o valor aportado" type="text" name="cash">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-secondary" data-dismiss="modal" type="button"> Fechar</button>
@@ -332,6 +339,11 @@ END - Main Menu
                                         <form id="formValidate2" novalidate="true" method="post" action="<?php echo base_url(); ?>cliente/edita">
                                             <div class="modal-body">
                                                 <input type="hidden" name="id" id="id">
+                                                <div class="form-group">
+                                                    <label for="cod"> Código</label>
+                                                    <input class="form-control" data-error="Código obrigatório." placeholder="Digite o código" required="required" type="cod" name="cod" id="cod">
+                                                    <div class="help-block form-text with-errors form-control-feedback"></div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="email"> Email</label>
                                                     <input class="form-control" data-error="Seu email é inválido" placeholder="Digite um email" required="required" type="email" name="email" id="email">
@@ -424,26 +436,6 @@ END - Main Menu
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label for="date_contribution"> Data de Aporte</label>
-                                                            <input class="form-control" placeholder="__/__/____" type="text" name="date_contribution" data-inputmask="'mask': '99/99/9999'" value="<?php echo set_value('date_contribution'); ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label for="contracted_interest"> Juros Contratados</label>
-                                                            <input class="form-control" placeholder="Digite o juros contratado" type="text" name="contracted_interest" value="<?php echo set_value('contracted_interest'); ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label for="cash"> Valor Aportado</label>
-                                                            <input class="form-control money" placeholder="Digite o valor aportado" type="text" name="cash" value="<?php echo set_value('cash'); ?>">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
                                                             <label for="status">Status</label>
                                                             <div class="form-check">
                                                                 <label class="form-check-label">
@@ -479,6 +471,52 @@ END - Main Menu
                                 </div>
                             </div>
                         </div>
+                        <div aria-labelledby="cadastroModalLabel" class="modal fade" id="cadastroAporte" role="dialog" tabindex="-1" style="display: none; padding-right: 17px;">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cadastroAporteLabel">Cadastro de Aporte</h5>
+                                            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true"> ×</span></button>
+                                        </div>
+                                        <form class="formValidate" novalidate="true" method="post" action="<?php echo base_url(); ?>cliente/cadastro_aporte">
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Cliente</label>
+                                                    <select class="form-control" id="client" name="client" required>
+                                                        <?php foreach ($clients as $client): ?>
+                                                            <option value="<?php echo $client->id ?>"><?php echo $client->name ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="date_contribution"> Data de Aporte</label>
+                                                            <input class="form-control" placeholder="__/__/____" type="text" name="date_contribution" data-inputmask="'mask': '99/99/9999'" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="contracted_interest"> Juros Contratados</label>
+                                                            <input class="form-control" placeholder="Digite o juros contratado" type="text" name="contracted_interest" required>
+                                                        </div>
+                                                    </div>
+                                                    <div  class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label for="cash"> Valor Aportado</label>
+                                                            <input class="form-control money" placeholder="Digite o valor aportado" type="text" name="cash" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" data-dismiss="modal" type="button"> Fechar</button>
+                                                <button class="btn btn-primary"> Salvar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -489,7 +527,6 @@ END - Main Menu
                                     <th>Data de Nascimento</th>
                                     <th>CGC</th>
                                     <th>Telefone</th>
-                                    <th>Endereço</th>
                                     <th>Banco</th>
                                     <th>Agência</th>
                                     <th>Conta</th>
@@ -501,17 +538,16 @@ END - Main Menu
                                 <?php foreach ($clients as $client): ?>
                                     <tr>
                                         <td class="row-actions">
-                                            <button class="mr-2 mb-2 btn btn-sm btn-info edit_button" type="button" data-target="#editaModal" data-toggle="modal" 
-                                                data-id="<?php echo $client->id; ?>" data-name="<?php echo $client->name; ?>" data-email="<?php echo $client->email; ?>" data-birthday="<?php echo $client->birthday; ?>" data-cli_cgc="<?php echo $client->cli_cgc; ?>" data-cli_num="<?php echo $client->cli_num; ?>" data-cli_end="<?php echo $client->cli_end; ?>" data-cli_bnc="<?php echo $client->cli_bnc; ?>" data-cli_agn="<?php echo $client->cli_agn; ?>" data-cli_cct="<?php echo $client->cli_cct; ?>" data-profession="<?php echo $client->profession; ?>" data-marital_status="<?php echo $client->marital_status; ?>" data-date_contribution="<?php echo $client->date_contribution; ?>" data-contracted_interest="<?php echo $client->contracted_interest; ?>" data-cash="<?php echo $client->cash; ?>" data-is_email_verified="<?php echo $client->is_email_verified; ?>" data-is_admin="<?php echo $client->is_admin; ?>">Editar</button>
+                                            <button class="mr-2 mb-2 btn btn-sm btn-warning saquesBtn" type="button" data-id="<?php echo $client->id; ?>">Saques</button>
+                                            <button class="mr-2 mb-2 btn btn-sm btn-info edit_button" type="button" data-target="#editaModal" data-toggle="modal" data-id="<?php echo $client->id; ?>" data-cod="<?php echo $client->cod; ?>" data-name="<?php echo $client->name; ?>" data-email="<?php echo $client->email; ?>" data-birthday="<?php echo $client->birthday; ?>" data-cli_cgc="<?php echo $client->cli_cgc; ?>" data-cli_num="<?php echo $client->cli_num; ?>" data-cli_end="<?php echo $client->cli_end; ?>" data-cli_bnc="<?php echo $client->cli_bnc; ?>" data-cli_agn="<?php echo $client->cli_agn; ?>" data-cli_cct="<?php echo $client->cli_cct; ?>" data-profession="<?php echo $client->profession; ?>" data-marital_status="<?php echo $client->marital_status; ?>" data-date_contribution="<?php echo $client->date_contribution; ?>" data-contracted_interest="<?php echo $client->contracted_interest; ?>" data-cash="<?php echo $client->cash; ?>" data-is_email_verified="<?php echo $client->is_email_verified; ?>" data-is_admin="<?php echo $client->is_admin; ?>">Editar</button>
                                             <button class="mr-2 mb-2 btn btn-sm btn-danger deleteBtn" type="button" data-href="<?php echo base_url('cliente/delete/'.$client->id); ?>"> Deletar</button>
                                         </td>
-                                        <td><?php echo $client->id;?></td>
+                                        <td><?php echo $client->cod;?></td>
                                         <td><?php echo $client->email;?></td>
                                         <td><?php echo $client->name;?></td>
                                         <td><?php echo $client->birthday;?></td>
                                         <td><?php echo $client->cli_cgc;?></td>
                                         <td><?php echo $client->cli_num;?></td>
-                                        <td><?php echo $client->cli_end;?></td>
                                         <td><?php echo $client->cli_bnc;?></td>
                                         <td><?php echo $client->cli_agn;?></td>
                                         <td><?php echo $client->cli_cct;?></td>
@@ -542,6 +578,22 @@ END - Main Menu
             </div>
         </div>
         <div class="display-type"></div>
+        <div class="onboarding-modal modal fade animated" id="onboardingFeaturesModal" role="dialog" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-centered" role="document">
+                <div class="modal-content text-center">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span class="close-label">Fechar</span>
+                        <span class="os-icon os-icon-close"></span>
+                    </button>
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title">Histórico de Saques</h4>
+                        <div class="row" id="saques">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="<?php echo base_url(); ?>assets/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bower_components/popper.js/dist/umd/popper.min.js"></script>
@@ -576,12 +628,39 @@ END - Main Menu
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-    <script>
+    <script type="text/javascript">
+            // Start jQuery function after page is loaded
+            $(document).ready(function(){
+             // Start jQuery click function to view Bootstrap modal when view info button is clicked
+                $('.saquesBtn').click(function(){
+                 // Get the id of selected saques and assign it in a variable called saquesData
+                    var saquesData = $(this).data('id');
+                    // Start AJAX function
+                    $.ajax({
+                     // Path for controller function which fetches selected saques data
+                        url: "<?php echo base_url() ?>Cliente/get_saques",
+                        // Method of getting data
+                        method: "POST",
+                        // Data is sent to the server
+                        data: {saquesData:saquesData},
+                        // Callback function that is executed after data is successfully sent and recieved
+                        success: function(data){
+                         // Print the fetched data of the selected saques in the section called #phone_result 
+                         // within the Bootstrap modal
+                            $('#saques').html(data);
+                            // Display the Bootstrap modal
+                            $('#onboardingFeaturesModal').modal('show');
+                        }
+                 });
+                 // End AJAX function
+             });
+         });  
         Inputmask().mask(document.querySelectorAll("input"));
 
         $(document).on( "click", '.edit_button',function(e) {
             var name = $(this).data('name');
             var id = $(this).data('id');
+            var cod = $(this).data('cod');
             var email = $(this).data('email');
             var birthday = $(this).data('birthday');
             var profession = $(this).data('profession');
@@ -599,6 +678,7 @@ END - Main Menu
             var is_admin = $(this).data('is_admin');
 
             $("#id").val(id);
+            $("#cod").val(cod);
             $("#name").val(name);
             $("#email").val(email);
             $("#birthday").val(birthday);

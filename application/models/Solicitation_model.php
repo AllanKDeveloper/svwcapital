@@ -1,13 +1,18 @@
 <?php
 class Solicitation_model extends CI_Model
 {
-	function getSolicitacao() {
-		$query = $this->db->get('solicitation');
+	function getSolicitacao($id) {
+		$query = $this->db->get_where('solicitation', array('id' => $id));
 		return $query->result();
 	}
 
 	function getSaques() {
-		$query = $this->db->get_where('solicitation', array('status' => null));
+		$this->db->select('solicitation.*, clients.name as client_name');
+		$this->db->where('solicitation.status', null);
+		$this->db->from("solicitation");
+		$this->db->join('clients', 'solicitation.client = clients.id');
+		$this->db->order_by("solicitation.date", 'asc');
+		$query = $this->db->get();
 		return $query->result();
 	}
 	
@@ -37,11 +42,20 @@ class Solicitation_model extends CI_Model
 		$this->db->update('solicitation', $data, array('id' => $id));
 	}
 
-	function delete($id)
+	function reprove($id, $data)
     {
-        $this->db->where('id', $id);
-        return $this->db->delete('solicitation');
-    }  
+        $this->db->update('solicitation', $data, array('id' => $id));
+    }
+
+    function aprove($id, $data)
+    {
+        $this->db->update('solicitation', $data, array('id' => $id));
+    }
+
+    function getSaquesAll($id) {
+    	$query = $this->db->get_where('solicitation', array('client' => $id));
+		return $query->result();
+    }
 }
 
 ?>
