@@ -56,6 +56,24 @@ class Income_model extends CI_Model
 		);
 		$this->db->update('income', $data, array('id' => $lastIncome->id));
     }
+
+    function update_last_income($client, $new_contributed, $date) {
+    	$query = $this->db->order_by('id', 'desc')->get_where('income', array('client' => $client));
+		$lastIncome = $query->result()[0];
+
+		$interest = strtr($lastIncome->interest, array('.' => '', ',' => '.'));
+		$contributed = strtr($new_contributed, array('.' => '', ',' => '.'));
+
+	    $new_total = $contributed + $interest;
+	    $new_total = number_format($new_total, 2, ',', '.');
+
+		$data = array(
+			'date' => $date,
+			'contributed' => $new_contributed,
+			'total' => $new_total
+		);
+		$this->db->update('income', $data, array('id' => $lastIncome->id));
+    }
 }
 
 ?>

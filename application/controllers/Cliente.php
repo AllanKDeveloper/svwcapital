@@ -13,6 +13,7 @@ class Cliente extends CI_Controller {
         $this->load->library('encrypt');
         $this->load->model('client_model');
         $this->load->model('income_model');
+        $this->load->model('solicitation_model');
     }
 
     function index()
@@ -131,7 +132,7 @@ class Cliente extends CI_Controller {
 
             $this->client_model->update($id, $data);
             $this->session->set_flashdata('message', 'Conta atualizada com sucesso!');
-            redirect('clientes');
+            redirect('cliente/perfil/'.$id);
         }
         else
         {
@@ -155,7 +156,6 @@ class Cliente extends CI_Controller {
     {
         $saquesData = $this->input->post('saquesData');
         if(isset($saquesData) and !empty($saquesData)){
-            $this->load->model('solicitation_model');
             $records = $this->solicitation_model->getSaquesAll($saquesData);
             if (sizeof($records) > 0) {
                 $output = '';
@@ -227,6 +227,93 @@ class Cliente extends CI_Controller {
             $this->income_model->insert($income);
             $this->session->set_flashdata('message', 'Aporte criado com sucesso!');
             redirect('clientes');
+        }
+        else
+        {
+            $this->index();
+        }
+    }
+
+    function perfil() {
+        $id = $this->uri->segment(3);
+        if (empty($id)) {
+            show_404();
+        }
+
+        $data['cliente'] = $this->client_model->getPerfil($id);
+        $data['saques'] = $this->solicitation_model->getSaquesAll($id);
+
+        $balanco = $this->income_model->getBalanco($id);
+        $data['interest_total'] = 0;
+        $new_interest = 0;
+        foreach ($balanco as $key => $product) {
+            if($product->client != $id) {
+                unset($balanco[$key]);
+            }
+            $interest = strtr($product->interest, array('.' => '', ',' => '.'));
+            $new_interest += $interest;
+        }
+        $saque_limite = number_format($new_interest, 2, ',', '.');
+        $data['interest_total'] = $saque_limite;
+        $data['balanco']  = $balanco;
+
+        $this->load->view('cliente_dados', $data);
+    }
+
+    function get_contrato_form() {
+        $contratoId = $this->input->post('contratoId');
+        if(isset($contratoId) and !empty($contratoId)){
+            $contract = $this->client_model->getAporteContrato($contratoId);
+            echo '
+                <form class="formValidate" novalidate="true" method="post" action="'.base_url().'cliente/atualiza_aporte" style="width:100%;">
+                    <div class="modal-body">
+                        <div class="col-sm-12">
+                            <input type="hidden" name="cliente_id" value="'.$contract[0]->client.'">
+                            <input type="hidden" name="id" value="'.$contract[0]->id.'">
+                            <div class="form-group">
+                                <label for="date_contribution"> Data de Aporte</label>
+                                <input class="form-control" placeholder="__/__/____" type="text" name="date_contribution" data-inputmask="\'mask\': \'99/99/9999\'" 
+                                value="'.$contract[0]->date_contribution.'" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="contracted_interest"> Juros Contratados</label>
+                                <input class="form-control" placeholder="Digite o juros contratado" type="text" name="contracted_interest" value="'.$contract[0]->contracted_interest.'" required>
+                            </div>
+                        </div>
+                        <div  class="col-sm-12">
+                            <div class="form-group">
+                                <label for="cash"> Valor Aportado</label>
+                                <input class="form-control money" placeholder="Digite o valor aportado" type="text" name="cash" value="'.$contract[0]->cash.'" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal" type="button"> Fechar</button>
+                        <button class="btn btn-primary"> Salvar</button>
+                    </div>
+                </form>
+            ';
+        }
+    }
+
+    function atualiza_aporte() {
+        $this->form_validation->set_rules('date_contribution', 'Data', 'required|trim');
+        $this->form_validation->set_rules('contracted_interest', 'Juros', 'required|trim');
+        $this->form_validation->set_rules('cash', 'Valor', 'required|trim');
+
+        if ($this->form_validation->run())
+        {
+            $data = array(
+                'date_contribution'     => !empty($this->input->post('date_contribution')) ? $this->input->post('date_contribution') : null,
+                'contracted_interest'   => !empty($this->input->post('contracted_interest')) ? $this->input->post('contracted_interest') : null,
+                'cash'                  => !empty($this->input->post('cash')) ? $this->input->post('cash') : null,
+            );
+            $id = $this->client_model->update_aporte($this->input->post('id'), $data);
+            // atualiza o ultimo income baseado no novo valor do contrato mantendo os juros
+            $this->income_model->update_last_income($this->input->post('cliente_id'), $this->input->post('cash'), $this->input->post('date_contribution'));
+            redirect('cliente/perfil/'.$this->input->post('cliente_id'));
         }
         else
         {

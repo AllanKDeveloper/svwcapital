@@ -8,7 +8,7 @@ class Client_model extends CI_Model
 
 	function getPerfil($id) {
 		$query = $this->db->get_where('clients', array('id' => $id));
-		return $query->result();
+		return $query->result()[0];
 	}
 
 	function insert($data)
@@ -32,6 +32,16 @@ class Client_model extends CI_Model
 	{
 		$this->db->insert('contract', $data);
 		return $this->db->insert_id();
+	}
+
+	function update_aporte($id, $data)
+	{
+		$this->db->update('contract', $data, array('id' => $id));
+	}
+
+	function getAporteContrato($id) {
+		$query = $this->db->get_where('contract', array('id' => $id));
+		return $query->result();
 	}
 }
 

@@ -147,8 +147,6 @@ START - Settings Link in secondary top menu
                             <ul>
                                 <li><a href="<?php echo base_url(); ?>clientes"><i class="os-icon os-icon-ui-49"></i><span>Clientes</span></a></li>
                                 <li><a href="<?php echo base_url(); ?>saques"><i class="os-icon os-icon-grid-10"></i><span>Solicitações de Saques</span></a></li>
-                                <li><a href="users_profile_small.html"><i class="os-icon os-icon-ui-44"></i><span>My Invoices</span></a></li>
-                                <li><a href="users_profile_small.html"><i class="os-icon os-icon-ui-15"></i><span>Cancel Account</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -169,7 +167,7 @@ END - Main Menu
                             <h6 class="element-header">Página Inicial</h6>
                             <div class="element-box-tp">
                                 <div class="row">
-                                        <?php foreach ($balanco as $key => $value): ?>
+                                    <?php foreach ($balanco as $key => $value): ?>
                                     <div class="col-6 col-sm-3 col-xxl-2">
                                         <!--START - BALANCES-->
                                         <a class="element-box el-tablo centered trend-in-corner smaller" href="#">
@@ -192,7 +190,7 @@ END - Main Menu
                                         </div> -->
                                         <!--END - BALANCES-->
                                     </div>
-                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
                                     <div class="col-lg-5 col-xxl-6">
                                         <!--START - Money Withdraw Form-->
                                         <div class="element-wrapper">

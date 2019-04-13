@@ -53,7 +53,7 @@ class Solicitation_model extends CI_Model
     }
 
     function getSaquesAll($id) {
-    	$query = $this->db->get_where('solicitation', array('client' => $id));
+    	$query = $this->db->order_by('date', 'desc')->get_where('solicitation', array('client' => $id));
 		return $query->result();
     }
 }

@@ -57,6 +57,7 @@ $route['login'] = 'login/index';
 $route['logout'] = 'home/logout';
 
 $route['clientes'] = 'cliente/index';
+$route['cliente/perfil/(:any)'] = 'cliente/perfil';
 
 $route['perfil'] = 'perfil/index';
 

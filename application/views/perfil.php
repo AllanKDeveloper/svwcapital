@@ -181,7 +181,7 @@ END - Main Menu
                                 </div>
                                 <div class="form-group">
                                     <label for=""> Email</label>
-                                    <input class="form-control" data-error="Seu email está incorreto" placeholder="Digite seu email" required="required" type="email" value="<?php echo $perfil[0]->email ?>">
+                                    <input class="form-control" data-error="Seu email está incorreto" placeholder="Digite seu email" required="required" type="email" value="<?php echo $perfil->email ?>">
                                     <div class="help-block form-text with-errors form-control-feedback"></div>
                                 </div>
                                 <div class="row">
